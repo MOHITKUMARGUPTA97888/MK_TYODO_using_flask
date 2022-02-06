@@ -5,10 +5,10 @@ from datetime import datetime
 
 
 
-aap = Flask(__name__)
-aap.config['SQLALCHEMY_DATABASE_URI']='sqlite:///ToDo.db'
-aap.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-db=SQLAlchemy(aap)
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///ToDo.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+db=SQLAlchemy(app)
 class ToDo(db.Model):
     srno= db.Column(db.Integer, primary_key=True)
     title= db.Column(db.String(200), nullable=False)
@@ -18,7 +18,7 @@ class ToDo(db.Model):
     def __repr__(self) -> str:
         return "f{self.srno}-{self.title}"
 
-@aap.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def hello_world():
     if request.method=='POST':
         title = request.form['title']
@@ -29,13 +29,13 @@ def hello_world():
     allTodo = ToDo.query.all() 
     return render_template("project1.html",alltodo=allTodo)
   
-@aap.route("/about")
+@app.route("/about")
 def aboutpage():
     alltodo=ToDo.query.all()
     print(alltodo)
     return "<p>hi this mk i am the owner of this site Hello, World!</p>"
 
-@aap.route("/update/<int:srno>",methods=['GET', 'POST'])
+@app.route("/update/<int:srno>",methods=['GET', 'POST'])
 def update(srno):
     if request.method=='POST':
         title = request.form['title']
@@ -49,12 +49,12 @@ def update(srno):
     todo=ToDo.query.filter_by(srno = srno).first()
     return render_template("update.html",todo=todo)
 
-@aap.route("/delete/<int:srno>")
+@app.route("/delete/<int:srno>")
 def delete(srno):
     todo=ToDo.query.filter_by(srno = srno).first()
     db.session.delete(todo)
     db.session.commit()
     return redirect("/")
 if __name__ == "__main__":
-    aap.run(debug=True)
+    app.run(debug=True)
     
