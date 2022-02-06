@@ -55,6 +55,8 @@ def delete(srno):
     db.session.delete(todo)
     db.session.commit()
     return redirect("/")
+
+# hello
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
     
