@@ -27,7 +27,7 @@ def hello_world():
         db.session.add(todo)
         db.session.commit()
     allTodo = ToDo.query.all() 
-    return render_template("project1.html",alltodo=allTodo)
+    return render_template("index.html",alltodo=allTodo)
   
 @app.route("/about")
 def aboutpage():
